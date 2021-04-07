@@ -17,6 +17,19 @@ module.exports = {
                 use: {
                     loader: 'babel-loader'
                 }
+            }, {
+                test: /\.css$/,
+                use: [
+                    // carregar o CSS no HTML
+                    { loader: 'style-loader' }, 
+                    // importacoes de outras url e css
+                    { loader: 'css-loader' }, 
+                ]
+            }, {
+                test: /.*\.(gif|png|jpe?g)$/i,
+                use: {
+                    loader: 'file-loader'
+                }
             }
         ]
     }
