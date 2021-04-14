@@ -5,11 +5,31 @@ class TechList extends Component {
     state = {
         newTech: '',
         techs: [
-            'Node.js',
-            'ReactJS',
-            'React Native',
         ]
     };
+
+    // Executado assim que o componente aparece em tela
+    // Exemplo: se tiver um componente que busca em api externa usa aqui
+    componentDidMount() {
+        const techs = localStorage.getItem('techs');
+
+        if (techs) {
+            this.setState({ techs: JSON.parse(techs) });
+        }
+    }
+
+    //Executado sempre que houver alteracoes nas props ou estados
+    componentDidUpdate(_, prevState) {
+        //_ coloca se vc nao for usar o prevProps
+        //this.props, this.state
+        if (prevState.techs != this.state.techs) {
+            localStorage.setItem('techs', JSON.stringify(this.state.techs))
+        }
+    }
+
+    //Executado quando o componente deixa de existir
+    componentWillUnmount() {
+    }
 
     handleInputChange = e => {
         this.setState({ newTech: e.target.value });
@@ -32,7 +52,14 @@ class TechList extends Component {
         return(
             <form onSubmit={this.handleSubmit}>
                 <ul>
-                {this.state.techs.map(tech => <TechItem key={tech} tech={tech} onDelete={() => this.handleDelete(tech)} />)}
+                {this.state.techs.map(tech => (
+                    <TechItem 
+                        key={tech} 
+                        tech={tech} 
+                        onDelete={() => this.handleDelete(tech)}
+                    />
+                ))}
+                
                 </ul>
                 <input 
                     type="text" 
